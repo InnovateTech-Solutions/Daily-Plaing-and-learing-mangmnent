@@ -3,10 +3,8 @@ import 'package:demogp/src/core/model/form_model.dart';
 import 'package:demogp/src/core/widget/buttons/buttons.dart';
 import 'package:demogp/src/core/widget/form/mission_form.dart';
 import 'package:demogp/src/core/widget/text/text.dart';
-import 'package:demogp/src/featuers/add_mission/controller/mission_controller.dart';
 import 'package:demogp/src/featuers/pdf_extract/controller/uploadpdf_controller.dart';
 import 'package:demogp/src/featuers/pdf_extract/view/reponse_page.dart';
-import 'package:demogp/src/featuers/signup/controller/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -15,8 +13,10 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class PdfTextExtractorScreen extends StatefulWidget {
-  const PdfTextExtractorScreen({required this.pdfPath, super.key});
+  const PdfTextExtractorScreen(
+      {required this.pdfPath, required this.email, super.key});
   final String pdfPath;
+  final String email;
 
   @override
   _PdfTextExtractorScreenState createState() => _PdfTextExtractorScreenState();
@@ -48,11 +48,13 @@ class _PdfTextExtractorScreenState extends State<PdfTextExtractorScreen> {
                   hintText: "Start date",
                   icon: const Icon(Icons.date_range_outlined),
                   invisible: false,
-                  validator: (username) => controller.validateDescription(username),
+                  validator: (username) =>
+                      controller.validateDescription(username),
                   type: TextInputType.datetime,
                   onChange: null,
                   inputFormat: [],
-                  onTap: () => _selectDate(context, controller.startDateController),
+                  onTap: () =>
+                      _selectDate(context, controller.startDateController),
                 ),
               ),
               const Gap(35),
@@ -63,16 +65,19 @@ class _PdfTextExtractorScreenState extends State<PdfTextExtractorScreen> {
                   hintText: "End date",
                   icon: const Icon(Icons.date_range_outlined),
                   invisible: false,
-                  validator: (username) => controller.validateDescription(username),
+                  validator: (username) =>
+                      controller.validateDescription(username),
                   type: TextInputType.datetime,
                   onChange: null,
                   inputFormat: [],
-                  onTap: () => _selectDate(context, controller.endDateController),
+                  onTap: () =>
+                      _selectDate(context, controller.endDateController),
                 ),
               ),
               const Gap(35),
               Buttons.selectedButton("Generate your PDF", () async {
-                if (controller.startDateController.text.isEmpty && controller.endDateController.text.isEmpty) {
+                if (controller.startDateController.text.isEmpty &&
+                    controller.endDateController.text.isEmpty) {
                   Get.snackbar(
                     "ERROR",
                     "Please enter the date",
@@ -82,7 +87,12 @@ class _PdfTextExtractorScreenState extends State<PdfTextExtractorScreen> {
                   );
                 } else {
                   await extractTextFromPdf(widget.pdfPath);
-                  Get.to(() => SchuldePage(searchtxt: pdftxt, strartDate: controller.startDateController.text, endDate: controller.endDateController.text,));
+                  Get.to(() => SchuldePage(
+                        pdfText: pdftxt,
+                        strartDate: controller.startDateController.text,
+                        endDate: controller.endDateController.text,
+                        email: widget.email,
+                      ));
                 }
               }),
             ],
@@ -116,7 +126,8 @@ class _PdfTextExtractorScreenState extends State<PdfTextExtractorScreen> {
     });
   }
 
-  Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+  Future<void> _selectDate(
+      BuildContext context, TextEditingController controller) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),

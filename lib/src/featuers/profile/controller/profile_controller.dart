@@ -2,8 +2,8 @@ import 'package:demogp/src/core/backend/authentication/authentication.dart';
 import 'package:demogp/src/core/controller/user_controller.dart';
 import 'package:demogp/src/featuers/profile/model/profile_button_model.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
   List<ProfileButton> profileList = [
@@ -27,7 +27,7 @@ class ProfileController extends GetxController {
         ),
         onTap: () =>
             Get.to(const Scaffold(), transition: Transition.rightToLeft)),
-                ProfileButton(
+    ProfileButton(
         title: 'my assigment',
         icon: SvgPicture.asset(
           'assets/arrow.svg',

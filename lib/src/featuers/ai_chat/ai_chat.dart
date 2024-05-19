@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
@@ -17,14 +18,16 @@ class _AiChatState extends State<AiChat> {
   List<ChatMessage> messages = [];
   String geminiResponse = '';
 
-  ChatUser currentUser = ChatUser(id: "0", firstName: "User");
+  ChatUser currentUser = ChatUser(
+    id: "0",
+    firstName: "User",
+  );
   ChatUser geminiUser = ChatUser(
     id: "1",
     firstName: "Gemini",
     profileImage:
         "https://seeklogo.com/images/G/google-gemini-logo-A5787B2669-seeklogo.com.png",
   );
-
   @override
   void initState() {
     super.initState();
@@ -33,21 +36,15 @@ class _AiChatState extends State<AiChat> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Gemini Chat',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text(
-             "Gemini Chat",
-            style: TextStyle(fontSize: 20),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          "Gemini Chat",
+          style: TextStyle(fontSize: 20),
         ),
-        body: _buildUI(),
       ),
+      body: _buildUI(),
     );
   }
 
@@ -79,15 +76,18 @@ class _AiChatState extends State<AiChat> {
           File(chatMessage.medias!.first.url).readAsBytesSync(),
         ];
       }
-      gemini.streamGenerateContent(
+      gemini
+          .streamGenerateContent(
         question,
         images: images,
-      ).listen((event) {
+      )
+          .listen((event) {
         ChatMessage? lastMessage = messages.firstOrNull;
         if (lastMessage != null && lastMessage.user == geminiUser) {
           lastMessage = messages.removeAt(0);
           String response = event.content?.parts?.fold(
-                "", (previous, current) => "$previous ${current.text}",
+                "",
+                (previous, current) => "$previous ${current.text}",
               ) ??
               "";
           lastMessage.text = response;
@@ -98,7 +98,8 @@ class _AiChatState extends State<AiChat> {
           });
         } else {
           String response = event.content?.parts?.fold(
-                "", (previous, current) => "$previous ${current.text}",
+                "",
+                (previous, current) => "$previous ${current.text}",
               ) ??
               "";
           ChatMessage message = ChatMessage(

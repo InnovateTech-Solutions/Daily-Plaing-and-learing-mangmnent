@@ -82,7 +82,11 @@ class _AiDashboardState extends State<AiDashboard> {
               subContainer(
                   iconData: Icons.schedule_outlined,
                   title: "get you schulde from AI",
-                  onTap: () => {Get.to(PdfUpload()), print(email ?? "")}),
+                  onTap: () => {
+                        Get.to(PdfUpload(
+                          email: email!,
+                        )),
+                      }),
             ],
           ),
           subContainer(

@@ -2,6 +2,7 @@ import 'package:demogp/src/config/theme/theme.dart';
 import 'package:demogp/src/core/backend/authentication/authentication.dart';
 import 'package:demogp/src/core/backend/user_repository/user_repository.dart';
 import 'package:demogp/src/core/model/user_model.dart';
+import 'package:demogp/src/featuers/main_page/view/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +27,7 @@ class RegisterController extends GetxController {
 
   Future<void> createUser(UserModel user) async {
     await UserRepository().createUser(user);
-    Get.to(Container());
+    Get.to(MainPage());
   }
 
   validateEmail(String? email) {
@@ -70,6 +71,7 @@ class RegisterController extends GetxController {
           .createUserWithEmailAndPassword(user.email, user.password);
       if (await code) {
         createUser(user);
+
         Get.snackbar("Success", " Account  Created Successfullly",
             snackPosition: SnackPosition.BOTTOM,
             colorText: AppColor.mainAppColor,

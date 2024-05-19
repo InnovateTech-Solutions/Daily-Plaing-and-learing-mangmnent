@@ -1,9 +1,9 @@
 import 'package:demogp/src/config/theme/theme.dart';
 import 'package:demogp/src/core/backend/mission_backend/mission_repository.dart';
-import 'package:demogp/test/test.dart';
+import 'package:demogp/src/core/model/mission.dart';
+import 'package:demogp/src/featuers/add_mission/view/mession_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:demogp/src/core/model/mission.dart';
 
 class MissionController extends GetxController {
   TextEditingController missionNameController = TextEditingController();

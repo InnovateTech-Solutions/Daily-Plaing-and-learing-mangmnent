@@ -5,34 +5,16 @@ import 'package:demogp/src/config/theme/theme.dart';
 import 'package:demogp/src/core/widget/buttons/buttons.dart';
 import 'package:demogp/src/featuers/pdf_extract/view/extract_page.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PDF Uploader',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: PdfUpload(),
-    );
-  }
-}
-
 class PdfUpload extends StatefulWidget {
-  const PdfUpload({super.key});
-
+  const PdfUpload({
+    super.key,
+    required this.email,
+  });
+  final String email;
   @override
   _PdfUploadState createState() => _PdfUploadState();
 }
@@ -153,7 +135,7 @@ class _PdfUploadState extends State<PdfUpload> {
                     ),
                   ],
                 ),
-              Expanded(child: Container()),
+              const Spacer(),
               Buttons.selectedButton(
                   'lets go',
                   () => path == null
@@ -163,6 +145,7 @@ class _PdfUploadState extends State<PdfUpload> {
                           backgroundColor: AppColor.error)
                       : Get.to(PdfTextExtractorScreen(
                           pdfPath: path ?? '',
+                          email: widget.email,
                         )))
             ],
           ),

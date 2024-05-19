@@ -2,8 +2,8 @@ import 'package:demogp/src/config/theme/theme.dart';
 import 'package:demogp/src/core/backend/authentication/authentication.dart';
 import 'package:demogp/src/core/backend/user_repository/user_repository.dart';
 import 'package:demogp/src/core/widget/text/text.dart';
+import 'package:demogp/src/featuers/add_mission/view/mession_view.dart';
 import 'package:demogp/src/featuers/reminder/view/reminder.dart';
-import 'package:demogp/test/test.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -51,7 +51,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 const SizedBox(
                   width: 10,
                 ),
-                TextApp.mainAppText("Hi , ${_getUsernameFromEmail(email ?? "")}"),
+                TextApp.mainAppText(
+                    "Hi , ${_getUsernameFromEmail(email ?? "")}"),
               ],
             ),
             const Gap(20),
@@ -76,7 +77,9 @@ class _DashboardPageState extends State<DashboardPage> {
           subContainer(
               iconData: Icons.add,
               title: "Add Reminders",
-              onTap: () => Get.to( Reminderpage(userEmail:email ?? "" ,))),
+              onTap: () => Get.to(Reminderpage(
+                    userEmail: email ?? "",
+                  ))),
           subContainer(
               iconData: Icons.book_online_outlined,
               title: "Add Assigment / Task",

@@ -22,7 +22,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    userRepository.getUserDetails(email ?? '');
+    // userRepository.getUserDetails(email ?? '');
   }
 
   int _selectedIndex = 0;

@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demogp/src/core/backend/authentication/authentication.dart';
-import 'package:demogp/src/core/backend/user_repository/user_repository.dart';
 import 'package:demogp/src/featuers/main_page/view/main_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +6,15 @@ import 'package:get/get.dart';
 
 class SchuldePage extends StatefulWidget {
   const SchuldePage(
-      {required this.searchtxt,
+      {required this.pdfText,
       required this.strartDate,
       required this.endDate,
+      required this.email,
       super.key});
 
-  final String searchtxt;
+  final String pdfText;
   final String strartDate;
+  final String email;
 
   final String endDate;
 
@@ -24,16 +24,10 @@ class SchuldePage extends StatefulWidget {
 
 class _SchuldePageState extends State<SchuldePage> {
   String schludeData = "";
-  final _authRepo = Get.put(AuthenticationRepository());
-
-  late final email = _authRepo.firebaseUser.value?.email;
-
-  final userRepository = Get.put(UserRepository());
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    await userRepository.getUserDetails(email ?? '');
     fetchData();
   }
 
@@ -60,7 +54,7 @@ class _SchuldePageState extends State<SchuldePage> {
   Future<void> fetchData() async {
     try {
       final response = await Dio().get(
-        'http://10.0.2.2:5000/ask?query=create for a study plan ${widget.searchtxt} that from date ${widget.strartDate} to ${widget.endDate}',
+        'http://10.0.2.2:5000/ask?query=create for a study plan ${widget.pdfText} that from date ${widget.strartDate} to ${widget.endDate}',
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = response.data;
@@ -83,8 +77,10 @@ class _SchuldePageState extends State<SchuldePage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          print(widget.email);
+
           await addStudyPlanToFirebase(
-              email!, widget.strartDate, widget.endDate, schludeData);
+              widget.email, widget.strartDate, widget.endDate, schludeData);
 
           Get.to(
             const MainPage(),
@@ -96,7 +92,14 @@ class _SchuldePageState extends State<SchuldePage> {
         title: const Text('schulde'),
       ),
       body: Center(
-        child: Text(schludeData),
+        child: SingleChildScrollView(
+          child: Container(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                schludeData,
+                style: TextStyle(),
+              )),
+        ),
       ),
     );
   }

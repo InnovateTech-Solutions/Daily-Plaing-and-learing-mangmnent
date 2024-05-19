@@ -1,7 +1,8 @@
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,17 +11,18 @@ class AddPdf extends GetxController {
   TextEditingController pdfPathController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
-    final pdfkey = GlobalKey<FormState>();
+  final pdfkey = GlobalKey<FormState>();
 
   RxString vendorName = ''.obs;
   RxString uploadStatus = ''.obs;
   Rx<PlatformFile?> selectedFile = Rx<PlatformFile?>(null);
   RxString filePath = ''.obs;
-@override
+  @override
   void onInit() {
     AddPdf();
     super.onInit();
   }
+
   void uploadFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -39,13 +41,12 @@ class AddPdf extends GetxController {
     vendorName.value = value;
   }
 
-   validateDescription(String? title) {
+  validateDescription(String? title) {
     if (title!.isNotEmpty) {
       return null;
     }
-    return 'Description is not vaild';
+    return 'Date is not vaild';
   }
-
 
   Future<void> uploadPDF(PlatformFile file) async {
     selectedFile.value = file; // Update selected file
@@ -69,8 +70,6 @@ class AddPdf extends GetxController {
     uploadStatus.value = status;
   }
 
-
-
   Future<void> deletePDFByVendorName(String vendorName) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -89,9 +88,4 @@ class AddPdf extends GetxController {
       updateUploadStatus("Error deleting PDFs");
     }
   }
-
-
-
-
-  
 }
