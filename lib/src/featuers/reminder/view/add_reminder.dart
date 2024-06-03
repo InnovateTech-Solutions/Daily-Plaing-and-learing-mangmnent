@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:demogp/src/config/theme/theme.dart';
 import 'package:demogp/src/core/model/form_model.dart';
 import 'package:demogp/src/core/model/reminder_model.dart';
@@ -9,6 +11,8 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import 'package:http/http.dart' as http;
+
 class ReminderFormPage extends StatefulWidget {
   const ReminderFormPage({required this.userEmail, super.key});
   final String userEmail;
@@ -19,7 +23,41 @@ class ReminderFormPage extends StatefulWidget {
 class _ReminderFormPageState extends State<ReminderFormPage> {
   @override
   Widget build(BuildContext context) {
-    ReminderController reminderController = Get.put(ReminderController());
+       ReminderController reminderController = Get.put(ReminderController());
+ 
+  Future<void> _submitForm() async {
+      final Map<String, dynamic> data = {
+        "id": 0,
+        "remindername": reminderController.reminderNameController.text,
+        "startDate": reminderController.startDateController.text,
+        "endDate":reminderController.endDateController.text,
+        "userEmail": widget.userEmail,
+      };
+
+      final String apiUrl = 'https://emailapitest.azurewebsites.net/api/sendEmailForUser';
+
+      try {
+        final response = await http.post(
+          Uri.parse(apiUrl),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: json.encode(data),
+        );
+
+        if (response.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Form submitted successfully!')));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to submit form')));
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+        print(e);
+      }
+    
+  }
+
+
     String dropdownValue = 'Task';
     const List<String> list = <String>['Task', 'Assignment'];
     return SafeArea(
@@ -91,6 +129,7 @@ class _ReminderFormPageState extends State<ReminderFormPage> {
                   formscontainer(
                       title: 'submit',
                       onTap: () => {
+                      _submitForm(),
                             reminderController.onAdd(Reminder(
                                 reminderName: reminderController
                                     .reminderNameController.text,
@@ -124,6 +163,8 @@ class _ReminderFormPageState extends State<ReminderFormPage> {
     }
   }
 }
+
+
 
 class MyDropDown extends StatefulWidget {
   const MyDropDown({super.key});

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:demogp/test/email_test.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: StockPage(),
+      home: ReminderForm(),
     );
   }
 }
